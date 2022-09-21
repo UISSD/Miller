@@ -1,7 +1,5 @@
 package com.github.uissd.miller.hook;
 
-import com.github.uissd.miller.util.Log;
-
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 
@@ -17,12 +15,11 @@ public abstract class Replacer extends XC_MethodReplacement implements Hooker {
         return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
     }
 
-    abstract protected String getTAG();
+    abstract protected void logMethodName(MethodHookParam param);
 
     @Override
     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-        String method = param.method.getName();
-        Log.d(getTAG(), "<<" + method + ">>");
+        logMethodName(param);
         beforeMethod(param);
         Object result = replaceMethod(param);
         param.setResult(result);
